@@ -1,5 +1,7 @@
 from application import app
-from flask import render_template,request
+from flask import render_template,request,send_from_directory,send_file
+import os
+folder='put the path of the folder where the videos are stored in the static folder here'
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -34,3 +36,10 @@ def getVideoName():
     with open('videosName.txt', 'r') as f:
         # remove the last '\n' character from the string and return the string in a list
         return f.read().splitlines()
+
+
+@app.route("/returnVideo/<videoName>", methods=['GET'], strict_slashes=False)
+def returnVideo(videoName):
+    print(videoName)
+    # return the video file from static folder with the videoName requested by the user 
+    return send_from_directory(folder, videoName)
